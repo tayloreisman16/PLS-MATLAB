@@ -12,11 +12,12 @@ num_subbands = 2;
 total_num_symbols = 12;
 bit_codebook = 1;
 
-rx_block = RX_Process();
-obj=rx_block.ConstructorFunc(bandwidth, bin_spacing, num_ant, num_data_bins, bit_codebook, num_subbands);
-buffer_rx_data = rx_block.Synchronize(obj, tx);
-chan_est_bins_sort = rx_block.ChannelEstimate(obj, buffer_rx_data, ref_sig);
-chan_est_sb = rx_block.bins2subbands(obj, chan_est_bins);
-[lsv,sval,rsv] = rx_block.SVD(obj, chan_est_sb);
-rx_block.PMI_Estimate(obj, rsv);
+rx_block = RX_Process(bandwidth, bin_spacing, num_ant, num_data_bins, bit_codebook, num_subbands);
+
+buffer_rx_data = Synchronize(rx_block, tx);
+chan_est_bins_sort = ChannelEstimate(rx_block, buffer_rx_data, ref_sig);
+% chan_est_sb = bins2subbands(rx_block, chan_est_bins_sort); 
+% Start with this
+% [lsv,sval,rsv] = SVD(rx_block, chan_est_sb);
+% PMI_Estimate(rx_block, rsv);
 
